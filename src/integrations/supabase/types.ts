@@ -110,6 +110,57 @@ export type Database = {
         }
         Relationships: []
       }
+      article_translations: {
+        Row: {
+          ai_summary: string | null
+          article_id: string
+          content: string
+          created_at: string
+          excerpt: string | null
+          id: string
+          language_code: string
+          meta_description: string | null
+          meta_title: string | null
+          seo_keywords: string[] | null
+          slug: string
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          ai_summary?: string | null
+          article_id: string
+          content: string
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          language_code: string
+          meta_description?: string | null
+          meta_title?: string | null
+          seo_keywords?: string[] | null
+          slug: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          ai_summary?: string | null
+          article_id?: string
+          content?: string
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          language_code?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          seo_keywords?: string[] | null
+          slug?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       articles: {
         Row: {
           ads_enabled: boolean | null
@@ -125,10 +176,12 @@ export type Database = {
           created_at: string
           excerpt: string | null
           featured: boolean | null
+          has_translations: boolean | null
           id: string
           image_url: string | null
           is_premium: boolean | null
           language: string | null
+          language_code: string | null
           likes_count: number | null
           meta_description: string | null
           meta_title: string | null
@@ -162,10 +215,12 @@ export type Database = {
           created_at?: string
           excerpt?: string | null
           featured?: boolean | null
+          has_translations?: boolean | null
           id?: string
           image_url?: string | null
           is_premium?: boolean | null
           language?: string | null
+          language_code?: string | null
           likes_count?: number | null
           meta_description?: string | null
           meta_title?: string | null
@@ -199,10 +254,12 @@ export type Database = {
           created_at?: string
           excerpt?: string | null
           featured?: boolean | null
+          has_translations?: boolean | null
           id?: string
           image_url?: string | null
           is_premium?: boolean | null
           language?: string | null
+          language_code?: string | null
           likes_count?: number | null
           meta_description?: string | null
           meta_title?: string | null
@@ -404,6 +461,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      languages: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          is_active: boolean
+          is_default: boolean
+          name: string
+          native_name: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          name: string
+          native_name: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          name?: string
+          native_name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       monetization_analytics: {
         Row: {
