@@ -22,7 +22,6 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useArticles, useCategories } from '@/hooks/use-articles';
 import { useAuth } from '@/hooks/use-auth';
-import { useLanguage } from '@/hooks/use-language';
 import { Search, TrendingUp, Clock, Play, User, Home, Crown } from 'lucide-react';
 
 export default function NewsHomepage() {
@@ -31,9 +30,8 @@ export default function NewsHomepage() {
   const [activeTab, setActiveTab] = useState("for-you");
   
   const { user } = useAuth();
-  const { currentLanguage } = useLanguage();
   const { data: categories } = useCategories();
-  const { data: latestArticles } = useArticles(undefined, 1, 6, currentLanguage);
+  const { data: latestArticles } = useArticles(undefined, 1, 6);
 
   return (
     <>

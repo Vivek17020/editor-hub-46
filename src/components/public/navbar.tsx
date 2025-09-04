@@ -6,7 +6,6 @@ import { FileText, Menu, X, Search } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { SearchDialog } from "@/components/public/search-dialog";
-import { LanguageSelector } from "@/components/public/language-selector";
 
 export function Navbar() {
   const { data: categories } = useCategories();
@@ -67,7 +66,7 @@ export function Navbar() {
           <div className="w-full flex-1 md:w-auto md:flex-none">
             {/* Search functionality */}
           </div>
-            <nav className="flex items-center space-x-2">
+          <nav className="flex items-center space-x-2">
             <Button
               variant="ghost"
               size="sm"
@@ -77,7 +76,6 @@ export function Navbar() {
               <Search className="h-4 w-4" />
               <span className="sr-only">Search</span>
             </Button>
-            <LanguageSelector />
             <ThemeToggle />
           </nav>
         </div>
