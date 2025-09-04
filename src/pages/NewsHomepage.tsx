@@ -96,9 +96,9 @@ export default function NewsHomepage() {
           </div>
         </div>
         
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 critical-above-fold">
           {/* Hero Section - Featured Articles */}
-          <section className="py-8">
+          <section className="py-4 sm:py-6 lg:py-8 hero-section">
             <FeaturedArticles />
           </section>
 

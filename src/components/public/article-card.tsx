@@ -27,6 +27,7 @@ export function ArticleCard({ article, featured = false, compact = false }: Arti
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   loading="lazy"
                   decoding="async"
+                  style={{ aspectRatio: '16/9' }}
                 />
               </div>
             ) : (
@@ -96,6 +97,7 @@ export function ArticleCard({ article, featured = false, compact = false }: Arti
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
               decoding="async"
+              style={{ aspectRatio: '16/9' }}
             />
           </div>
         ) : (
