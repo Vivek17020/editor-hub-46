@@ -35,9 +35,9 @@ export interface Article {
   };
 }
 
-export const useArticles = (categorySlug?: string, page = 1, limit = 12) => {
+export const useArticles = (categorySlug?: string, page = 1, limit = 12, languageCode = 'en') => {
   return useQuery({
-    queryKey: ["articles", categorySlug, page, limit],
+    queryKey: ["articles", categorySlug, page, limit, languageCode],
     queryFn: async () => {
       let query = supabase
         .from("articles")
@@ -52,6 +52,7 @@ export const useArticles = (categorySlug?: string, page = 1, limit = 12) => {
           )
         `)
         .eq("published", true)
+        .eq("language_code", languageCode)
         .order("published_at", { ascending: false });
 
       if (categorySlug) {
@@ -75,11 +76,12 @@ export const useArticles = (categorySlug?: string, page = 1, limit = 12) => {
   });
 };
 
-export const useArticle = (slug: string) => {
+export const useArticle = (slug: string, languageCode = 'en') => {
   return useQuery({
-    queryKey: ["article", slug],
+    queryKey: ["article", slug, languageCode],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // First try to get the article in the requested language
+      let { data, error } = await supabase
         .from("articles")
         .select(`
           *,
@@ -93,9 +95,34 @@ export const useArticle = (slug: string) => {
         `)
         .eq("slug", slug)
         .eq("published", true)
-        .single();
+        .eq("language_code", languageCode)
+        .maybeSingle();
+
+      // If no article found in requested language, try default language (English)
+      if (!data && languageCode !== 'en') {
+        const result = await supabase
+          .from("articles")
+          .select(`
+            *,
+            categories:category_id (
+              id,
+              name,
+              slug,
+              color,
+              description
+            )
+          `)
+          .eq("slug", slug)
+          .eq("published", true)
+          .eq("language_code", 'en')
+          .maybeSingle();
+        
+        data = result.data;
+        error = result.error;
+      }
 
       if (error) throw error;
+      if (!data) throw new Error('Article not found');
 
       // Increment view count
       await supabase
@@ -157,9 +184,9 @@ export const useCategories = () => {
 };
 
 // Hook for infinite scrolling articles
-export const useInfiniteArticles = (categorySlug?: string) => {
+export const useInfiniteArticles = (categorySlug?: string, languageCode = 'en') => {
   return useQuery({
-    queryKey: ["infinite-articles", categorySlug],
+    queryKey: ["infinite-articles", categorySlug, languageCode],
     queryFn: async () => {
       let query = supabase
         .from("articles")
@@ -174,6 +201,7 @@ export const useInfiniteArticles = (categorySlug?: string) => {
           )
         `)
         .eq("published", true)
+        .eq("language_code", languageCode)
         .order("published_at", { ascending: false });
 
       if (categorySlug) {
@@ -194,6 +222,29 @@ export const useInfiniteArticles = (categorySlug?: string) => {
       if (error) throw error;
       
       return data as Article[];
+    },
+  });
+};
+
+// Hook for getting article translations
+export const useArticleTranslations = (articleId: string) => {
+  return useQuery({
+    queryKey: ["article-translations", articleId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("article_translations")
+        .select(`
+          *,
+          languages:language_code (
+            name,
+            native_name,
+            code
+          )
+        `)
+        .eq("article_id", articleId);
+
+      if (error) throw error;
+      return data;
     },
   });
 };

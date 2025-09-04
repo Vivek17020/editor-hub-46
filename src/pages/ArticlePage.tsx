@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useArticle } from "@/hooks/use-articles";
 import { useTrackReading } from "@/hooks/use-reading-history";
+import { useLanguage } from "@/hooks/use-language";
 import { Navbar } from "@/components/public/navbar";
 import { EnhancedRelatedArticles } from "@/components/public/enhanced-related-articles";
 import { ShareButtons } from "@/components/public/share-buttons";
@@ -18,7 +19,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: article, isLoading, error } = useArticle(slug!);
+  const { currentLanguage } = useLanguage();
+  const { data: article, isLoading, error } = useArticle(slug!, currentLanguage);
   const trackReading = useTrackReading();
 
   // Track reading when article loads

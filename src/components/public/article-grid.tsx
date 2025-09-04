@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Article } from "@/hooks/use-articles";
 import { useQuery } from "@tanstack/react-query";
+import { useLanguage } from "@/hooks/use-language";
 
 interface ArticleGridProps {
   categorySlug?: string;
@@ -15,9 +16,10 @@ const ARTICLES_PER_PAGE = 12;
 export function ArticleGrid({ categorySlug }: ArticleGridProps) {
   const [page, setPage] = useState(1);
   const [allArticles, setAllArticles] = useState<Article[]>([]);
+  const { currentLanguage } = useLanguage();
 
   const { data, isLoading, error, isFetching } = useQuery({
-    queryKey: ["articles-paginated", categorySlug, page],
+    queryKey: ["articles-paginated", categorySlug, page, currentLanguage],
     queryFn: async () => {
       let query = supabase
         .from("articles")
@@ -32,6 +34,7 @@ export function ArticleGrid({ categorySlug }: ArticleGridProps) {
           )
         `)
         .eq("published", true)
+        .eq("language_code", currentLanguage)
         .order("published_at", { ascending: false });
 
       if (categorySlug) {
@@ -73,11 +76,11 @@ export function ArticleGrid({ categorySlug }: ArticleGridProps) {
     }
   }, [data, page]);
 
-  // Reset when category changes
+  // Reset when category or language changes
   useEffect(() => {
     setPage(1);
     setAllArticles([]);
-  }, [categorySlug]);
+  }, [categorySlug, currentLanguage]);
 
   const loadMore = useCallback(() => {
     setPage(prev => prev + 1);
