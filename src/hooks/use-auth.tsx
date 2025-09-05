@@ -9,8 +9,9 @@ interface AuthContextType {
   loading: boolean; // alias for compatibility
   isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<{ error?: any }>;
+  signUp: (email: string, password: string, fullName?: string) => Promise<{ error?: any }>;
+  signInWithProvider: (provider: 'google' | 'github') => Promise<{ error?: any }>;
   signOut: () => Promise<void>;
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error?: any }>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -20,8 +21,9 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   isAdmin: false,
   signIn: async () => ({ error: null }),
-  signOut: async () => {},
   signUp: async () => ({ error: null }),
+  signInWithProvider: async () => ({ error: null }),
+  signOut: async () => {},
 });
 
 export const useAuth = () => {
@@ -91,22 +93,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return { error };
   };
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-  };
-
-  const signUp = async (email: string, password: string, fullName: string) => {
+  const signUp = async (email: string, password: string, fullName?: string) => {
+    const redirectUrl = `${window.location.origin}/`;
+    
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/`,
+        emailRedirectTo: redirectUrl,
         data: {
           full_name: fullName,
         }
       }
     });
     return { error };
+  };
+
+  const signInWithProvider = async (provider: 'google' | 'github') => {
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: redirectUrl,
+      }
+    });
+    return { error };
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
   };
 
   return (
@@ -117,8 +133,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       loading: isLoading, // alias for compatibility
       isAdmin,
       signIn,
-      signOut,
-      signUp
+      signUp,
+      signInWithProvider,
+      signOut
     }}>
       {children}
     </AuthContext.Provider>
