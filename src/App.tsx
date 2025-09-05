@@ -17,6 +17,7 @@ import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import EditorialGuidelines from "./pages/EditorialGuidelines";
 import SubscriptionPage from "./pages/SubscriptionPage";
+import Auth from "./pages/Auth";
 import AdminLogin from "./pages/AdminLogin";
 import AdminLayout from "./pages/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -48,6 +49,7 @@ const App = () => (
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/subscription" element={<SubscriptionPage />} />
                 <Route path="/editorial-guidelines" element={<EditorialGuidelines />} />
+                <Route path="/auth" element={<Auth />} />
                 
                 {/* Admin Routes */}
                 <Route path="/admin/login" element={<AdminLogin />} />

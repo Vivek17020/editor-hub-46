@@ -10,6 +10,7 @@ interface AuthContextType {
   isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<{ error?: any }>;
   signOut: () => Promise<void>;
+  signUp: (email: string, password: string, fullName: string) => Promise<{ error?: any }>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -20,6 +21,7 @@ const AuthContext = createContext<AuthContextType>({
   isAdmin: false,
   signIn: async () => ({ error: null }),
   signOut: async () => {},
+  signUp: async () => ({ error: null }),
 });
 
 export const useAuth = () => {
@@ -93,6 +95,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await supabase.auth.signOut();
   };
 
+  const signUp = async (email: string, password: string, fullName: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/`,
+        data: {
+          full_name: fullName,
+        }
+      }
+    });
+    return { error };
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -101,7 +117,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       loading: isLoading, // alias for compatibility
       isAdmin,
       signIn,
-      signOut
+      signOut,
+      signUp
     }}>
       {children}
     </AuthContext.Provider>
