@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Check, Crown, Zap, Star } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 
 interface Plan {
   id: string;
@@ -77,19 +77,12 @@ export const SubscriptionPlans = () => {
 
   const handleSubscribe = async (plan: Plan) => {
     if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to subscribe to a plan.",
-        variant: "destructive",
-      });
+      toast.error('Please sign in to subscribe to a plan');
       return;
     }
 
     if (plan.id === 'free') {
-      toast({
-        title: "You're already on the free plan!",
-        description: "Upgrade to Premium or Pro for more features.",
-      });
+      toast.error('You are already on the free plan');
       return;
     }
 
@@ -112,11 +105,7 @@ export const SubscriptionPlans = () => {
       }
     } catch (error: any) {
       console.error('Subscription error:', error);
-      toast({
-        title: "Subscription failed",
-        description: error.message || "Please try again later.",
-        variant: "destructive",
-      });
+      toast.error(error.message || 'Failed to start checkout process. Please try again.');
     } finally {
       setLoading(null);
     }

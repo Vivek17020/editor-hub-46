@@ -23,8 +23,17 @@ export default function SubscriptionPage() {
 
   const checkCurrentSubscription = async () => {
     try {
-      // This will be implemented when database tables are available
-      console.log('Checking current subscription for:', user?.email);
+      const { data, error } = await supabase.functions.invoke('check-subscription');
+      
+      if (error) {
+        console.error('Error checking subscription:', error);
+        return;
+      }
+
+      if (data.subscribed) {
+        setCurrentPlan(data.subscription_tier?.toLowerCase() || 'premium');
+        setSubscriptionEnd(data.subscription_end);
+      }
     } catch (error) {
       console.error('Error checking subscription:', error);
     }

@@ -35,9 +35,15 @@ export const PremiumGate = ({
 
   const checkSubscriptionStatus = async () => {
     try {
-      // Check subscription status - will be implemented when database tables are available
-      console.log('Checking subscription for:', user?.email);
-      setIsSubscribed(false); // Default to false for now
+      const { data, error } = await supabase.functions.invoke('check-subscription');
+      
+      if (error) {
+        console.error('Error checking subscription:', error);
+        setIsSubscribed(false);
+        return;
+      }
+
+      setIsSubscribed(data.subscribed || false);
     } catch (error) {
       console.error('Error checking subscription status:', error);
       setIsSubscribed(false);
@@ -116,13 +122,13 @@ export const PremiumGate = ({
               </Button>
             ) : (
               <>
-                <Button 
-                  onClick={() => window.location.href = '/admin/login'}
-                  className="w-full"
-                  size="lg"
-                >
-                  Sign In to Subscribe
-                </Button>
+              <Button 
+                onClick={() => window.location.href = '/auth'}
+                className="w-full"
+                size="lg"
+              >
+                Sign In to Subscribe
+              </Button>
                 <p className="text-xs text-center text-muted-foreground">
                   New to our platform? Sign up for free and then upgrade
                 </p>

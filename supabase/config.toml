@@ -43,3 +43,6 @@ verify_jwt = false
 
 [functions.send-newsletter]
 verify_jwt = false
+
+[functions.customer-portal]
+verify_jwt = true
