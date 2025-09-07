@@ -27,6 +27,8 @@ import AdminArticles from "./pages/AdminArticles";
 import AdminNewArticle from "./pages/AdminNewArticle";
 import AdminEditArticle from "./pages/AdminEditArticle";
 import AdminEngagement from "./pages/AdminEngagement";
+import AMPArticlePage from "./pages/AMPArticlePage";
+import NewsletterPreferencesPage from "./pages/NewsletterPreferences";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +55,8 @@ const App = () => (
                 <Route path="/subscription-success" element={<SubscriptionSuccess />} />
                 <Route path="/subscription-canceled" element={<SubscriptionCanceled />} />
                 <Route path="/editorial-guidelines" element={<EditorialGuidelines />} />
+                <Route path="/newsletter-preferences" element={<NewsletterPreferencesPage />} />
+                <Route path="/amp/article/:slug" element={<AMPArticlePage />} />
                 <Route path="/auth" element={<Auth />} />
                 
                 {/* Admin Routes */}

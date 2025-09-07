@@ -16,6 +16,8 @@ import { NativeAdContainer } from '@/components/ads/native-ad-container';
 import { PremiumArticleList } from '@/components/monetization/premium-article-list';
 import { SEOHead, generateOrganizationStructuredData } from '@/utils/seo';
 import { CoreWebVitals } from '@/components/performance/core-web-vitals';
+import { PWAInstaller } from '@/components/pwa/pwa-installer';
+import { usePWA } from '@/hooks/use-pwa';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -30,6 +32,7 @@ export default function NewsHomepage() {
   const [activeTab, setActiveTab] = useState("for-you");
   
   const { user } = useAuth();
+  const { isOnline, updateAvailable, updateApp } = usePWA();
   const { data: categories } = useCategories();
   const { data: latestArticles } = useArticles(undefined, 1, 6);
 
@@ -199,6 +202,26 @@ export default function NewsHomepage() {
 
         {/* Footer */}
         <Footer />
+
+        {/* PWA Components */}
+        <PWAInstaller />
+        
+        {/* Update Available Banner */}
+        {updateAvailable && (
+          <div className="fixed top-0 left-0 right-0 bg-primary text-primary-foreground p-3 text-center z-50">
+            <span className="mr-4">New version available!</span>
+            <Button variant="secondary" size="sm" onClick={updateApp}>
+              Update Now
+            </Button>
+          </div>
+        )}
+
+        {/* Offline Banner */}
+        {!isOnline && (
+          <div className="fixed bottom-0 left-0 right-0 bg-destructive text-destructive-foreground p-3 text-center z-50">
+            📵 You're offline. Some features may not work.
+          </div>
+        )}
 
         {/* Search Dialog */}
         <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen} />

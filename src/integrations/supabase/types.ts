@@ -534,6 +534,39 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_preferences: {
+        Row: {
+          active: boolean
+          categories: string[] | null
+          created_at: string
+          email: string
+          frequency: string
+          id: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          active?: boolean
+          categories?: string[] | null
+          created_at?: string
+          email: string
+          frequency?: string
+          id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          active?: boolean
+          categories?: string[] | null
+          created_at?: string
+          email?: string
+          frequency?: string
+          id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           email: string
@@ -660,6 +693,65 @@ export type Database = {
         }
         Relationships: []
       }
+      user_analytics: {
+        Row: {
+          article_id: string | null
+          browser: string | null
+          click_target: string | null
+          created_at: string
+          device_type: string | null
+          event_type: string
+          id: string
+          location_country: string | null
+          metadata: Json | null
+          page_url: string | null
+          scroll_depth: number | null
+          session_id: string | null
+          time_spent: number | null
+          user_id: string | null
+        }
+        Insert: {
+          article_id?: string | null
+          browser?: string | null
+          click_target?: string | null
+          created_at?: string
+          device_type?: string | null
+          event_type: string
+          id?: string
+          location_country?: string | null
+          metadata?: Json | null
+          page_url?: string | null
+          scroll_depth?: number | null
+          session_id?: string | null
+          time_spent?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          article_id?: string | null
+          browser?: string | null
+          click_target?: string | null
+          created_at?: string
+          device_type?: string | null
+          event_type?: string
+          id?: string
+          location_country?: string | null
+          metadata?: Json | null
+          page_url?: string | null
+          scroll_depth?: number | null
+          session_id?: string | null
+          time_spent?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_analytics_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_preferences: {
         Row: {
           id: string
@@ -727,6 +819,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      vapid_config: {
+        Row: {
+          created_at: string
+          id: string
+          private_key: string
+          public_key: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          private_key: string
+          public_key: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          private_key?: string
+          public_key?: string
+        }
+        Relationships: []
       }
     }
     Views: {
