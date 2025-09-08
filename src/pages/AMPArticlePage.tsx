@@ -267,11 +267,23 @@ export default function AMPArticlePage() {
 </html>`;
   };
 
-  // Serve AMP HTML directly
+  // Serve AMP HTML directly by replacing document content
   useEffect(() => {
     if (article) {
       const ampHtml = generateAMPHTML();
-      document.documentElement.innerHTML = ampHtml;
+      
+      // Replace entire document with AMP HTML
+      const parser = new DOMParser();
+      const ampDoc = parser.parseFromString(ampHtml, 'text/html');
+      
+      // Replace current document content
+      document.documentElement.innerHTML = ampDoc.documentElement.innerHTML;
+      
+      // Ensure AMP library loads
+      const ampScript = document.createElement('script');
+      ampScript.async = true;
+      ampScript.src = 'https://cdn.ampproject.org/v0.js';
+      document.head.appendChild(ampScript);
     }
   }, [article]);
 
