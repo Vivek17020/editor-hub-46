@@ -49,9 +49,11 @@ export function Footer() {
           {/* Brand Section */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">N</span>
-              </div>
+              <img 
+                src="/lovable-uploads/ad21ceb4-1347-4691-ad1a-27e4295439ae.png" 
+                alt="TheBulletinBriefs Logo" 
+                className="w-8 h-8"
+              />
               <span className="font-bold text-xl">TheBulletinBriefs</span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -64,11 +66,11 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
+                <span>+918390710252</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                <span>123 News Street, Media City</span>
+                <span>Maharashtra, India</span>
               </div>
             </div>
           </div>
