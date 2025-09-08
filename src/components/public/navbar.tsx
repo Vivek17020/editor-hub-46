@@ -18,11 +18,9 @@ export function Navbar() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
-            <img 
-              src="/lovable-uploads/ea4f2817-80f5-4a8c-856b-0e0b045222ce.png" 
-              alt="TheBulletinBriefs Logo" 
-              className="w-8 h-8 rounded-full object-cover bg-primary/10 border border-primary/20"
-            />
+            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+              <FileText className="h-4 w-4 text-primary-foreground" />
+            </div>
             <span className="font-bold text-xl bg-gradient-primary bg-clip-text text-transparent">
               TheBulletinBriefs
             </span>
@@ -52,11 +50,9 @@ export function Navbar() {
           className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          <img 
-            src="/lovable-uploads/ea4f2817-80f5-4a8c-856b-0e0b045222ce.png" 
-            alt="TheBulletinBriefs Logo" 
-            className="w-8 h-8 rounded-full object-cover bg-primary/10 border border-primary/20 mr-2"
-          />
+          <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center mr-2">
+            <FileText className="h-4 w-4 text-primary-foreground" />
+          </div>
           <span className="font-bold text-xl bg-gradient-primary bg-clip-text text-transparent">
             TheBulletinBriefs
           </span>
