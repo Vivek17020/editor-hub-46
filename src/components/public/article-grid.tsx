@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard } from "./article-card";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Article } from "@/hooks/use-articles";
 import { useQuery } from "@tanstack/react-query";
+import { ArticleSkeleton } from "@/components/ui/skeleton";
 
 interface ArticleGridProps {
   categorySlug?: string;
@@ -12,7 +13,7 @@ interface ArticleGridProps {
 
 const ARTICLES_PER_PAGE = 12;
 
-export function ArticleGrid({ categorySlug }: ArticleGridProps) {
+export const ArticleGrid = memo(function ArticleGrid({ categorySlug }: ArticleGridProps) {
   const [page, setPage] = useState(1);
   const [allArticles, setAllArticles] = useState<Article[]>([]);
 
@@ -100,13 +101,7 @@ export function ArticleGrid({ categorySlug }: ArticleGridProps) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="space-y-3">
-            <div className="aspect-[16/9] bg-muted rounded-lg animate-pulse" />
-            <div className="space-y-2">
-              <div className="h-4 bg-muted rounded animate-pulse" />
-              <div className="h-4 bg-muted rounded w-3/4 animate-pulse" />
-            </div>
-          </div>
+          <ArticleSkeleton key={i} />
         ))}
       </div>
     );
@@ -133,8 +128,12 @@ export function ArticleGrid({ categorySlug }: ArticleGridProps) {
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {allArticles.map((article) => (
-          <ArticleCard key={article.id} article={article} />
+        {allArticles.map((article, index) => (
+          <ArticleCard 
+            key={article.id} 
+            article={article} 
+            priority={index < 3} // Prioritize first 3 images
+          />
         ))}
       </div>
 
@@ -187,4 +186,4 @@ export function ArticleGrid({ categorySlug }: ArticleGridProps) {
       )}
     </div>
   );
-}
+});

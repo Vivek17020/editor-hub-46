@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { Navbar } from "@/components/public/navbar";
 import { CategoryFilter } from "@/components/public/category-filter";
 import { ArticleGrid } from "@/components/public/article-grid";
@@ -26,7 +26,7 @@ import { useArticles, useCategories } from '@/hooks/use-articles';
 import { useAuth } from '@/hooks/use-auth';
 import { Search, TrendingUp, Clock, Play, User, Home, Crown } from 'lucide-react';
 
-export default function NewsHomepage() {
+const NewsHomepage = memo(function NewsHomepage() {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("for-you");
@@ -35,6 +35,18 @@ export default function NewsHomepage() {
   const { isOnline, updateAvailable, updateApp } = usePWA();
   const { data: categories } = useCategories();
   const { data: latestArticles } = useArticles(undefined, 1, 6);
+
+  const handleCategoryChange = useCallback((category: string | undefined) => {
+    setSelectedCategory(category);
+  }, []);
+
+  const handleTabChange = useCallback((tab: string) => {
+    setActiveTab(tab);
+  }, []);
+
+  const handleSearchToggle = useCallback(() => {
+    setIsSearchOpen(prev => !prev);
+  }, []);
 
   return (
     <>
@@ -47,7 +59,7 @@ export default function NewsHomepage() {
       {/* Core Web Vitals Optimization */}
       <CoreWebVitals />
       
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background animate-fade-in">
         {/* Fixed Navbar */}
         <div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
           <Navbar />
@@ -65,7 +77,7 @@ export default function NewsHomepage() {
                       key={category.id}
                       variant={selectedCategory === category.slug ? "default" : "ghost"}
                       size="sm"
-                      onClick={() => setSelectedCategory(category.slug === selectedCategory ? undefined : category.slug)}
+                      onClick={() => handleCategoryChange(category.slug === selectedCategory ? undefined : category.slug)}
                       className="whitespace-nowrap text-xs"
                     >
                       {category.name}
@@ -77,7 +89,7 @@ export default function NewsHomepage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setIsSearchOpen(true)}
+                    onClick={handleSearchToggle}
                     className="gap-2"
                   >
                     <Search className="h-4 w-4" />
@@ -139,7 +151,7 @@ export default function NewsHomepage() {
                   <div className="lg:col-span-3 space-y-8">
                     <CategoryFilter 
                       activeCategory={selectedCategory}
-                      onCategoryChange={setSelectedCategory}
+                      onCategoryChange={handleCategoryChange}
                     />
                     
                     <ArticleGrid categorySlug={selectedCategory} />
@@ -262,4 +274,6 @@ export default function NewsHomepage() {
       </div>
     </>
   );
-}
+});
+
+export default NewsHomepage;
