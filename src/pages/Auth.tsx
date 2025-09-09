@@ -28,33 +28,42 @@ export default function Auth() {
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) return;
+    if (!email || !password || (isSignUp && !fullName)) return;
 
     setIsLoading(true);
     
-    console.log('Auth attempt:', { isSignUp, email, fullName });
-    
-    const { error } = isSignUp 
-      ? await signUp(email, password, fullName)
-      : await signIn(email, password);
-    
-    console.log('Auth result:', { error });
-    
-    if (error) {
-      console.error('Authentication Error:', error);
+    try {
+      const { error } = isSignUp 
+        ? await signUp(email, password, fullName)
+        : await signIn(email, password);
+      
+      if (error) {
+        toast({
+          title: "Authentication Error", 
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (isSignUp) {
+        toast({
+          title: "Account Created Successfully!",
+          description: "Welcome to TheBulletinBriefs! You can now access all features.",
+        });
+        // Clear form
+        setEmail('');
+        setPassword('');
+        setFullName('');
+      } else {
+        toast({
+          title: "Welcome back!",
+          description: "Successfully signed in to your account.",
+        });
+      }
+    } catch (err) {
       toast({
-        title: "Authentication Error",
-        description: error.message,
+        title: "Something went wrong",
+        description: "Please try again in a moment.",
         variant: "destructive",
       });
-    } else if (isSignUp) {
-      console.log('Signup successful');
-      toast({
-        title: "Account Created",
-        description: "Please check your email to verify your account.",
-      });
-    } else {
-      console.log('Signin successful');
     }
     
     setIsLoading(false);
@@ -178,13 +187,14 @@ export default function Auth() {
             <form onSubmit={handleEmailAuth} className="space-y-4">
               {isSignUp && (
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name</Label>
+                  <Label htmlFor="fullName">Full Name *</Label>
                   <Input
                     id="fullName"
                     type="text"
                     placeholder="Enter your full name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
+                    required
                   />
                 </div>
               )}
