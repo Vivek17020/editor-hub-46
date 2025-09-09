@@ -32,21 +32,29 @@ export default function Auth() {
 
     setIsLoading(true);
     
+    console.log('Auth attempt:', { isSignUp, email, fullName });
+    
     const { error } = isSignUp 
       ? await signUp(email, password, fullName)
       : await signIn(email, password);
     
+    console.log('Auth result:', { error });
+    
     if (error) {
+      console.error('Authentication Error:', error);
       toast({
         title: "Authentication Error",
         description: error.message,
         variant: "destructive",
       });
     } else if (isSignUp) {
+      console.log('Signup successful');
       toast({
         title: "Account Created",
         description: "Please check your email to verify your account.",
       });
+    } else {
+      console.log('Signin successful');
     }
     
     setIsLoading(false);
