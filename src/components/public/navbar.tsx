@@ -3,27 +3,15 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useCategories } from "@/hooks/use-articles";
 import { FileText, Menu, X, Search } from "lucide-react";
-import { useState, memo, useCallback } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { SearchDialog } from "@/components/public/search-dialog";
 import { UserMenu } from "@/components/public/user-menu";
 
-export const Navbar = memo(function Navbar() {
+export function Navbar() {
   const { data: categories } = useCategories();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-
-  const toggleMobileMenu = useCallback(() => {
-    setMobileMenuOpen(prev => !prev);
-  }, []);
-
-  const closeMobileMenu = useCallback(() => {
-    setMobileMenuOpen(false);
-  }, []);
-
-  const openSearch = useCallback(() => {
-    setSearchOpen(true);
-  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -62,7 +50,7 @@ export const Navbar = memo(function Navbar() {
         <Button
           variant="ghost"
           className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
-          onClick={toggleMobileMenu}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <img 
             src="/lovable-uploads/ad21ceb4-1347-4691-ad1a-27e4295439ae.png" 
@@ -87,7 +75,7 @@ export const Navbar = memo(function Navbar() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={openSearch}
+              onClick={() => setSearchOpen(true)}
               className="h-9 w-9 p-0"
             >
               <Search className="h-4 w-4" />
@@ -106,7 +94,7 @@ export const Navbar = memo(function Navbar() {
             <Link
               to="/"
               className="block px-3 py-2 text-base font-medium text-foreground/60 hover:text-foreground"
-              onClick={closeMobileMenu}
+              onClick={() => setMobileMenuOpen(false)}
             >
               Home
             </Link>
@@ -115,7 +103,7 @@ export const Navbar = memo(function Navbar() {
                 key={category.id}
                 to={`/category/${category.slug}`}
                 className="block px-3 py-2 text-base font-medium text-foreground/60 hover:text-foreground"
-                onClick={closeMobileMenu}
+                onClick={() => setMobileMenuOpen(false)}
               >
                 {category.name}
               </Link>
@@ -128,4 +116,4 @@ export const Navbar = memo(function Navbar() {
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </header>
   );
-});
+}

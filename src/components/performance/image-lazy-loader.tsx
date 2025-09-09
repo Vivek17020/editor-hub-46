@@ -1,55 +1,57 @@
-import { useState, useRef, useEffect, memo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { ImageSkeleton } from '@/components/ui/skeleton';
 
-interface LazyImageProps {
+interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   alt: string;
+  fallbackSrc?: string;
   className?: string;
   aspectRatio?: string;
   priority?: boolean;
-  placeholder?: string;
   onLoad?: () => void;
   onError?: () => void;
 }
 
-export const LazyImage = memo(function LazyImage({
+export function LazyImage({
   src,
   alt,
+  fallbackSrc = '/placeholder.svg',
   className,
   aspectRatio = '16/9',
   priority = false,
-  placeholder,
   onLoad,
   onError,
+  ...props
 }: LazyImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [isInView, setIsInView] = useState(priority);
   const imgRef = useRef<HTMLImageElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     if (priority) return;
 
-    const observer = new IntersectionObserver(
+    observerRef.current = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
-          observer.disconnect();
+          observerRef.current?.disconnect();
         }
       },
       {
-        rootMargin: '50px',
+        rootMargin: '50px 0px',
         threshold: 0.1,
       }
     );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+    if (imgRef.current) {
+      observerRef.current.observe(imgRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observerRef.current?.disconnect();
+    };
   }, [priority]);
 
   const handleLoad = () => {
@@ -58,57 +60,52 @@ export const LazyImage = memo(function LazyImage({
   };
 
   const handleError = () => {
-    setIsError(true);
+    setHasError(true);
     onError?.();
   };
 
   return (
     <div 
-      ref={containerRef}
-      className={cn(`aspect-${aspectRatio} overflow-hidden relative`, className)}
+      ref={imgRef}
+      className={cn(
+        "relative overflow-hidden bg-muted",
+        `aspect-[${aspectRatio}]`,
+        className
+      )}
     >
-      {!isInView && (
-        <ImageSkeleton className="absolute inset-0 w-full h-full rounded-lg" />
+      {/* Placeholder/Loading skeleton */}
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-gradient-to-r from-muted via-muted/50 to-muted animate-pulse" />
       )}
       
-      {isInView && !isError && (
-        <>
-          {!isLoaded && (
-            <ImageSkeleton className="absolute inset-0 w-full h-full rounded-lg" />
+      {/* Actual image */}
+      {isInView && (
+        <img
+          src={hasError ? fallbackSrc : src}
+          alt={alt}
+          className={cn(
+            "w-full h-full object-cover transition-opacity duration-300",
+            isLoaded ? "opacity-100" : "opacity-0"
           )}
-          <img
-            ref={imgRef}
-            src={src}
-            alt={alt}
-            loading={priority ? "eager" : "lazy"}
-            decoding="async"
-            onLoad={handleLoad}
-            onError={handleError}
-            className={cn(
-              "w-full h-full object-cover transition-all duration-500",
-              isLoaded 
-                ? "opacity-100 scale-100" 
-                : "opacity-0 scale-105",
-              className
-            )}
-            style={{ 
-              aspectRatio: aspectRatio.replace('/', '/'), 
-              contentVisibility: 'auto'
-            }}
-          />
-        </>
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          onLoad={handleLoad}
+          onError={handleError}
+          {...props}
+        />
       )}
       
-      {isError && (
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-muted/50 to-muted/80 flex items-center justify-center rounded-lg">
+      {/* Error state */}
+      {hasError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted">
           <div className="text-center p-4">
-            <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center mx-auto mb-2">
-              <span className="text-primary font-bold text-sm">!</span>
+            <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+              <span className="text-primary font-bold text-lg">📰</span>
             </div>
-            <span className="text-xs text-muted-foreground">Image unavailable</span>
+            <p className="text-xs text-muted-foreground">Image unavailable</p>
           </div>
         </div>
       )}
     </div>
   );
-});
+}
