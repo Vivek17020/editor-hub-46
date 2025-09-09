@@ -173,9 +173,9 @@ export default function Disclaimer() {
               <CardContent>
                 <p>If you have questions about this disclaimer or need to report an error, please contact us:</p>
                 <div className="mt-4 space-y-2">
-                  <p><strong>Email:</strong> legal@thebulletinbriefs.com</p>
-                  <p><strong>Editorial:</strong> editor@thebulletinbriefs.com</p>
-                  <p><strong>Phone:</strong> +918390710252</p>
+                  <p><strong>Email:</strong> contact@thebulletinbriefs.in</p>
+                  <p><strong>Editorial:</strong> editor@thebulletinbriefs.in</p>
+                  <p><strong>Phone:</strong> 918390710252</p>
                   <p><strong>Address:</strong> Maharashtra, India</p>
                 </div>
               </CardContent>

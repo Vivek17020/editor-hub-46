@@ -146,8 +146,8 @@ export default function TermsOfService() {
                 </p>
                 <div className="mt-4 space-y-2">
                   <p><strong>Contact Us:</strong></p>
-                  <p>Email: legal@thebulletinbriefs.com</p>
-                  <p>Phone: +918390710252</p>
+                  <p>Email: contact@thebulletinbriefs.in</p>
+                  <p>Phone: 918390710252</p>
                   <p>Address: Maharashtra, India</p>
                 </div>
               </CardContent>

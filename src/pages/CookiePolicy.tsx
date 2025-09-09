@@ -157,8 +157,8 @@ export default function CookiePolicy() {
               <CardContent>
                 <p>If you have questions about our cookie policy, please contact us:</p>
                 <div className="mt-4 space-y-2">
-                  <p><strong>Email:</strong> privacy@thebulletinbriefs.com</p>
-                  <p><strong>Phone:</strong> +918390710252</p>
+                  <p><strong>Email:</strong> contact@thebulletinbriefs.in</p>
+                  <p><strong>Phone:</strong> 918390710252</p>
                   <p><strong>Address:</strong> Maharashtra, India</p>
                 </div>
               </CardContent>
