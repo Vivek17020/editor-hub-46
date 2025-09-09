@@ -167,7 +167,7 @@ export default function NewsHomepage() {
                       </CardContent>
                     </Card>
 
-                    <NewsletterSignup />
+                    {/* Newsletter moved to footer only */}
                   </div>
                 </div>
               </TabsContent>
@@ -178,12 +178,14 @@ export default function NewsHomepage() {
             </Tabs>
           </section>
 
-          {/* Sidebar with Quick Actions */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Quick Actions */}
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Push Notifications */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">📱 Stay Updated</CardTitle>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  📱 Push Notifications
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-3">
@@ -193,10 +195,42 @@ export default function NewsHomepage() {
               </CardContent>
             </Card>
 
-            {/* Newsletter Signup */}
-            <div className="md:col-span-2">
-              <NewsletterSignup />
-            </div>
+            {/* Additional features can be added here */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-primary" />
+                  Latest Updates
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Stay informed with our latest breaking news and analysis
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Crown className="h-5 w-5 text-primary" />
+                  Premium Content
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Access exclusive articles and ad-free reading
+                </p>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => window.location.href = '/subscription'}
+                  className="w-full"
+                >
+                  Upgrade Now
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </main>
 
