@@ -211,6 +211,7 @@ export function VAPIDGenerator() {
                 <li>• Never expose private keys in client-side code or version control</li>
                 <li>• Only admins should have access to VAPID key generation</li>
                 <li>• The public key can be safely used in your frontend application</li>
+                <li>• Private keys are hidden by default for security</li>
               </ul>
             </div>
           </div>
