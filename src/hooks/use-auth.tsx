@@ -110,12 +110,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signInWithProvider = async (provider: 'google' | 'github') => {
-    const redirectUrl = `${window.location.origin}/`;
-    
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: "https://editor-hub-85.vercel.app/",
       }
     });
     return { error };
