@@ -224,17 +224,6 @@ export function ArticleForm({ article, onSave }: ArticleFormProps) {
     setLoading(true);
     
     try {
-      // Check if user is authenticated
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please log in to publish articles.",
-          variant: "destructive",
-        });
-        navigate('/auth');
-        return;
-      }
       let imageUrl = formData.image_url;
       
       if (imageFile) {

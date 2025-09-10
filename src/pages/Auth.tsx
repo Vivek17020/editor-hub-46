@@ -9,7 +9,6 @@ import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Github } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import { supabase } from '@/integrations/supabase/client';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -71,12 +70,7 @@ export default function Auth() {
   };
 
   const handleSocialAuth = async (provider: 'google' | 'github') => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: "https://editor-hub-85.vercel.app/",
-      }
-    });
+    const { error } = await signInWithProvider(provider);
     
     if (error) {
       toast({

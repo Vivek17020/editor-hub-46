@@ -20,7 +20,7 @@ export function SocialLogin({ redirectTo = '/', mode = 'signin' }: SocialLoginPr
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-          redirectTo: "https://editor-hub-85.vercel.app/",
+          redirectTo: `${window.location.origin}${redirectTo}`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
