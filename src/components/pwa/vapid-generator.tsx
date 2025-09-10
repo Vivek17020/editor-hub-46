@@ -16,6 +16,7 @@ export function VAPIDGenerator() {
   const [keys, setKeys] = useState<VAPIDKeys | null>(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showPrivateKey, setShowPrivateKey] = useState(false);
 
   const generateVAPIDKeys = async () => {
     setLoading(true);
@@ -156,13 +157,22 @@ export function VAPIDGenerator() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="privateKey">Private Key</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="privateKey">Private Key</Label>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setShowPrivateKey(!showPrivateKey)}
+                  className="text-xs"
+                >
+                  {showPrivateKey ? 'Hide' : 'Show'}
+                </Button>
+              </div>
               <div className="flex gap-2">
                 <Input
                   id="privateKey"
-                  value={keys.privateKey}
+                  value={showPrivateKey ? keys.privateKey : '••••••••••••••••••••••••••••••••'}
                   readOnly
-                  type="password"
                   className="font-mono text-xs"
                 />
                 <Button
@@ -192,11 +202,16 @@ export function VAPIDGenerator() {
               </Button>
             </div>
 
-            <div className="p-4 bg-muted/50 rounded-lg">
-              <p className="text-sm text-muted-foreground">
-                ⚠️ <strong>Important:</strong> Keep your private key secure and never expose it in client-side code. 
-                The public key can be safely used in your frontend application.
+            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <p className="text-sm text-destructive mb-2">
+                <strong>🔒 Security Warning:</strong> 
               </p>
+              <ul className="text-sm text-destructive space-y-1">
+                <li>• Store private keys only in server-side environment variables</li>
+                <li>• Never expose private keys in client-side code or version control</li>
+                <li>• Only admins should have access to VAPID key generation</li>
+                <li>• The public key can be safely used in your frontend application</li>
+              </ul>
             </div>
           </div>
         )}

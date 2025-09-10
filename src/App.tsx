@@ -27,6 +27,7 @@ import AdminArticles from "./pages/AdminArticles";
 import AdminNewArticle from "./pages/AdminNewArticle";
 import AdminEditArticle from "./pages/AdminEditArticle";
 import AdminEngagement from "./pages/AdminEngagement";
+import AdminSettings from "./pages/AdminSettings";
 import AMPArticlePage from "./pages/AMPArticlePage";
 import NewsletterPreferencesPage from "./pages/NewsletterPreferences";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -75,6 +76,7 @@ const App = () => (
                   <Route path="articles/new" element={<AdminNewArticle />} />
                   <Route path="articles/:id/edit" element={<AdminEditArticle />} />
                   <Route path="engagement" element={<AdminEngagement />} />
+                  <Route path="settings" element={<AdminSettings />} />
                 </Route>
                 
                 {/* Catch-all route */}
