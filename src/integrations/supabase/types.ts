@@ -859,6 +859,14 @@ export type Database = {
         }
         Returns: number
       }
+      get_article_engagement: {
+        Args: { article_uuid: string }
+        Returns: {
+          comments_count: number
+          likes_count: number
+          shares_count: number
+        }[]
+      }
       get_author_profile: {
         Args: { author_uuid: string }
         Returns: {
@@ -886,6 +894,22 @@ export type Database = {
           updated_at: string
           user_id: string
         }[]
+      }
+      get_safe_author_profile: {
+        Args: { author_uuid: string }
+        Returns: {
+          author_bio: string
+          author_image_url: string
+          avatar_url: string
+          full_name: string
+          id: string
+          job_title: string
+          username: string
+        }[]
+      }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
     }
     Enums: {
