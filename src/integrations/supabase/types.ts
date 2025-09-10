@@ -288,6 +288,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "articles_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "articles_category_id_fkey"
             columns: ["category_id"]
             isOneToOne: false
@@ -458,6 +465,13 @@ export type Database = {
             columns: ["uploaded_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "exam_papers_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -660,6 +674,36 @@ export type Database = {
         }
         Relationships: []
       }
+      security_audit_log: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          resource: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          resource?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          resource?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       subscribers: {
         Row: {
           created_at: string
@@ -846,7 +890,42 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          author_bio: string | null
+          author_image_url: string | null
+          avatar_url: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          job_title: string | null
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          author_bio?: string | null
+          author_image_url?: string | null
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          job_title?: string | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          author_bio?: string | null
+          author_image_url?: string | null
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          job_title?: string | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       calculate_seo_score: {
@@ -858,6 +937,10 @@ export type Database = {
           article_title: string
         }
         Returns: number
+      }
+      can_manage_push_notifications: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
       get_article_engagement: {
         Args: { article_uuid: string }
@@ -910,6 +993,19 @@ export type Database = {
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      log_security_event: {
+        Args: { action_type: string; resource_name?: string }
+        Returns: undefined
+      }
+      security_check_status: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          description: string
+          issue: string
+          requires_manual_action: boolean
+          status: string
+        }[]
       }
     }
     Enums: {
