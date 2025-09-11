@@ -7,6 +7,8 @@ import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/hooks/use-auth";
 import { CSPHeaders } from "@/components/security/csp-headers";
+import { ErrorBoundary } from "@/components/error/error-boundary";
+import { OptimizedCoreWebVitals } from "@/components/performance/optimized-core-web-vitals";
 import NewsHomepage from "./pages/NewsHomepage";
 import ArticlePage from "./pages/ArticlePage";
 import CategoryPage from "./pages/CategoryPage";
@@ -45,9 +47,11 @@ const App = () => (
         <AuthProvider>
           <TooltipProvider>
             <BrowserRouter>
-              <CSPHeaders />
-              <Toaster />
-              <Sonner />
+              <ErrorBoundary>
+                <CSPHeaders />
+                <OptimizedCoreWebVitals />
+                <Toaster />
+                <Sonner />
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<NewsHomepage />} />
@@ -84,6 +88,7 @@ const App = () => (
                 {/* Catch-all route */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              </ErrorBoundary>
             </BrowserRouter>
           </TooltipProvider>
         </AuthProvider>
