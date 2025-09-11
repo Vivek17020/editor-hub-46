@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/hooks/use-auth";
+import { CSPHeaders } from "@/components/security/csp-headers";
 import NewsHomepage from "./pages/NewsHomepage";
 import ArticlePage from "./pages/ArticlePage";
 import CategoryPage from "./pages/CategoryPage";
@@ -44,6 +45,7 @@ const App = () => (
         <AuthProvider>
           <TooltipProvider>
             <BrowserRouter>
+              <CSPHeaders />
               <Toaster />
               <Sonner />
               <Routes>

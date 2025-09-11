@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { AMPArticleGenerator } from '@/components/amp/amp-generator';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 export default function AMPArticlePage() {
   const { slug } = useParams<{ slug: string }>();
@@ -60,7 +61,8 @@ export default function AMPArticlePage() {
     const canonical = `${baseUrl}/article/${article.slug}`;
     
     // Clean content for AMP
-    const cleanContent = article.content
+    // Security: Sanitize content before processing
+    const cleanContent = sanitizeHtml(article.content || '')
       ?.replace(/<script[^>]*>.*?<\/script>/gi, '')
       ?.replace(/<iframe[^>]*>.*?<\/iframe>/gi, '')
       ?.replace(/<img([^>]*)>/gi, (match: string, attrs: string) => {
@@ -272,12 +274,19 @@ export default function AMPArticlePage() {
     if (article) {
       const ampHtml = generateAMPHTML();
       
-      // Replace entire document with AMP HTML
+      // Security: Use safe DOM manipulation instead of innerHTML
       const parser = new DOMParser();
       const ampDoc = parser.parseFromString(ampHtml, 'text/html');
       
-      // Replace current document content
-      document.documentElement.innerHTML = ampDoc.documentElement.innerHTML;
+      // Safely clear and replace document content
+      while (document.documentElement.firstChild) {
+        document.documentElement.removeChild(document.documentElement.firstChild);
+      }
+      
+      // Safely append sanitized content
+      Array.from(ampDoc.documentElement.children).forEach(child => {
+        document.documentElement.appendChild(document.importNode(child, true));
+      });
       
       // Ensure AMP library loads
       const ampScript = document.createElement('script');

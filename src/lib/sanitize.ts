@@ -20,10 +20,12 @@ export function sanitizeHtml(html: string): string {
     ALLOWED_ATTR: [
       'href', 'target', 'rel',
       'src', 'alt', 'width', 'height',
-      'class', 'id',
-      'style'
+      'class', 'id'
     ],
-    ALLOW_DATA_ATTR: false
+    ALLOW_DATA_ATTR: false,
+    FORBID_ATTR: ['style', 'onclick', 'onload', 'onerror', 'onmouseover'],
+    FORBID_TAGS: ['script', 'iframe', 'object', 'embed', 'form', 'input', 'textarea', 'select'],
+    USE_PROFILES: { html: true }
   });
 }
 

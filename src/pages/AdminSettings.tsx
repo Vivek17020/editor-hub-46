@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { VAPIDGenerator } from '@/components/pwa/vapid-generator';
 import { SecurityNotice } from '@/components/security/security-notice';
+import { SecurityAuditReport } from '@/components/security/security-audit-report';
 import { Settings, Shield, Bell, Database } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { Navigate } from 'react-router-dom';
@@ -54,33 +55,7 @@ export default function AdminSettings() {
         </TabsList>
 
         <TabsContent value="security" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                Security Configuration
-              </CardTitle>
-              <CardDescription>
-                Review and configure security settings for your application
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="p-4 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
-                  <h4 className="font-medium text-green-800 dark:text-green-200 mb-2">
-                    ✅ Security Hardening Complete
-                  </h4>
-                  <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
-                    <li>• RLS policies configured for all tables</li>
-                    <li>• User email privacy protection enabled</li>
-                    <li>• Comment moderation system active</li>
-                    <li>• Payment security restrictions in place</li>
-                    <li>• Database extensions secured</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <SecurityAuditReport />
         </TabsContent>
 
         <TabsContent value="notifications" className="space-y-6">

@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 interface AMPArticleProps {
   article?: any;
@@ -20,9 +21,10 @@ export function AMPArticleGenerator({ article }: AMPArticleProps) {
     const canonical = `${baseUrl}/article/${articleData.slug}`;
     
     // Clean content for AMP (remove unsupported elements)
-    const cleanContent = articleData.content
+    // Security: Sanitize content before processing
+    const cleanContent = sanitizeHtml(articleData.content || '')
       ?.replace(/<script[^>]*>.*?<\/script>/gi, '') // Remove scripts
-      ?.replace(/<iframe[^>]*>.*?<\/iframe>/gi, '') // Remove iframes (use amp-iframe instead)
+      ?.replace(/<iframe[^>]*>.*?<\/iframe>/gi, '') // Remove iframes (use amp-iframe instead)  
       ?.replace(/<img([^>]*)>/gi, (match: string, attrs: string) => {
         // Convert img to amp-img
         const srcMatch = attrs.match(/src="([^"]*)"/);
