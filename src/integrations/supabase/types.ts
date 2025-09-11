@@ -926,24 +926,6 @@ export type Database = {
         }
         Relationships: []
       }
-      security_definer_functions: {
-        Row: {
-          arguments: string | null
-          function_name: unknown | null
-          owner: unknown | null
-          schema_name: unknown | null
-          security_type: string | null
-        }
-        Relationships: []
-      }
-      security_overview: {
-        Row: {
-          check_type: string | null
-          object_name: string | null
-          status: string | null
-        }
-        Relationships: []
-      }
     }
     Functions: {
       calculate_seo_score: {

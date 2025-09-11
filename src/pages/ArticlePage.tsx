@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SEOHead, generateArticleStructuredData, generateSEOKeywords } from "@/utils/seo";
 import { BreadcrumbSchema, useBreadcrumbs } from "@/components/seo/breadcrumb-schema";
+import { sanitizeHtml } from "@/lib/sanitize";
 import { Calendar, Clock, Eye, User, ArrowLeft } from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -108,7 +109,7 @@ export default function ArticlePage() {
   }
 
   const publishedDate = article.published_at ? new Date(article.published_at) : new Date(article.created_at);
-  const currentUrl = window.location.href;
+  const currentUrl = `${window.location.origin}${location.pathname}`;
   
   // Auto-generate SEO keywords from article content
   const seoKeywords = generateSEOKeywords(article.title, article.content, article.tags);
@@ -247,7 +248,7 @@ export default function ArticlePage() {
 
             {/* Article Content */}
             <article className="prose prose-lg max-w-none dark:prose-invert mb-12">
-              <div dangerouslySetInnerHTML={{ __html: article.content }} />
+              <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }} />
             </article>
 
             {/* Tags */}

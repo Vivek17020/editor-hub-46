@@ -77,7 +77,7 @@ export function SEOHead({
   title,
   description,
   image,
-  url = window.location.href,
+  url,
   type = "website",
   publishedTime,
   modifiedTime,

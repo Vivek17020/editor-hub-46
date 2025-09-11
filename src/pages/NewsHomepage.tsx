@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/public/navbar";
 import { CategoryFilter } from "@/components/public/category-filter";
 import { ArticleGrid } from "@/components/public/article-grid";
@@ -27,6 +28,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { Search, TrendingUp, Clock, Play, User, Home, Crown } from 'lucide-react';
 
 export default function NewsHomepage() {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("for-you");
@@ -87,7 +89,7 @@ export default function NewsHomepage() {
                   <Button
                     variant="default"
                     size="sm"
-                    onClick={() => window.location.href = '/subscription'}
+                    onClick={() => navigate('/subscription')}
                     className="gap-2 bg-gradient-to-r from-primary to-primary/80"
                   >
                     <Crown className="h-4 w-4" />
@@ -224,7 +226,7 @@ export default function NewsHomepage() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => window.location.href = '/subscription'}
+                  onClick={() => navigate('/subscription')}
                   className="w-full"
                 >
                   Upgrade Now
