@@ -42,13 +42,9 @@ export function CommentsSection({ articleId }: CommentsSectionProps) {
   const fetchComments = async () => {
     setIsLoading(true);
     try {
-      // Fetch only approved comments directly with the new RLS policy
+      // Use security definer function to fetch approved comments safely
       const { data, error } = await supabase
-        .from('comments')
-        .select('*')
-        .eq('article_id', articleId)
-        .eq('is_approved', true)
-        .order('created_at', { ascending: false });
+        .rpc('get_public_comments', { article_uuid: articleId });
       
       if (error) throw error;
       setComments(data || []);
