@@ -2,130 +2,103 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Calendar, Eye, ArrowRight, Shield, Zap, Users, Globe, Sparkles } from 'lucide-react';
-import { Navbar } from '@/components/public/navbar';
-import { Footer } from '@/components/public/footer';
+import { FileText, Calendar, Eye, ArrowRight, Shield } from 'lucide-react';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      {/* Header */}
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                <FileText className="h-4 w-4 text-primary-foreground" />
+              </div>
+              <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                Article Hub
+              </h1>
+            </div>
+            <Button asChild variant="outline" className="border-primary/20 hover:bg-primary/10">
+              <Link to="/admin/login">
+                <Shield className="w-4 h-4 mr-2" />
+                Admin Login
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </header>
 
       {/* Hero Section */}
-      <section className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-hero opacity-5" />
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
-        
-        <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-8 border border-primary/20">
-            <Sparkles className="w-4 h-4" />
-            <span>Professional News Platform</span>
-          </div>
-          
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-8 leading-tight">
-            TheBulletinBriefs
+      <section className="relative py-24 px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-gradient-hero opacity-10" />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-6">
+            Professional Content Management
           </h1>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-            Your trusted source for <span className="text-primary font-semibold">breaking news</span>, in-depth analysis, and comprehensive coverage of events that shape our world.
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            A powerful admin dashboard for creating, editing, and publishing articles with rich text editing and media management.
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button asChild size="lg" className="bg-gradient-primary hover:bg-gradient-secondary transition-all duration-300 shadow-glow text-lg px-8 py-6 rounded-xl">
-              <Link to="/news">
-                Explore News
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-            </Button>
-            
-            <Button asChild variant="outline" size="lg" className="border-primary/30 hover:bg-primary/10 text-lg px-8 py-6 rounded-xl">
-              <Link to="/admin/login">
-                <Shield className="w-5 h-5 mr-2" />
-                Admin Access
-              </Link>
-            </Button>
-          </div>
-          
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
-                <Globe className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-lg">Global Coverage</h3>
-              <p className="text-muted-foreground text-sm">Real-time news from around the world</p>
-            </div>
-            
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-12 h-12 bg-secondary/20 rounded-xl flex items-center justify-center">
-                <Zap className="w-6 h-6 text-secondary" />
-              </div>
-              <h3 className="font-semibold text-lg">Breaking News</h3>
-              <p className="text-muted-foreground text-sm">Latest updates as they happen</p>
-            </div>
-            
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
-                <Users className="w-6 h-6 text-accent" />
-              </div>
-              <h3 className="font-semibold text-lg">Expert Analysis</h3>
-              <p className="text-muted-foreground text-sm">In-depth reporting by professionals</p>
-            </div>
-          </div>
+          <Button asChild size="lg" className="bg-gradient-primary hover:bg-gradient-secondary transition-all duration-300 shadow-glow">
+            <Link to="/admin/login">
+              Get Started
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </Button>
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-gradient-subtle">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-card/30">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Professional News Experience
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Everything you need to manage content
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Built with cutting-edge technology to deliver news that matters, when it matters
+            <p className="text-lg text-muted-foreground">
+              Built with modern technologies for a seamless experience
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="border-border/30 hover:shadow-glow hover:border-primary/30 transition-all duration-500 bg-card/80 backdrop-blur-sm group">
-              <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <FileText className="h-8 w-8 text-primary-foreground" />
+            <Card className="border-border/50 hover:shadow-accent transition-all duration-300">
+              <CardHeader>
+                <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center mb-4">
+                  <FileText className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <CardTitle className="text-xl font-bold">Rich Content</CardTitle>
+                <CardTitle>Rich Text Editor</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Advanced editor with multimedia support, real-time collaboration, and professional formatting tools for compelling storytelling.
+                <p className="text-muted-foreground">
+                  Professional WYSIWYG editor with support for headings, formatting, links, images, and code blocks.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-border/30 hover:shadow-glow hover:border-secondary/30 transition-all duration-500 bg-card/80 backdrop-blur-sm group">
-              <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-secondary rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Zap className="h-8 w-8 text-primary-foreground" />
+            <Card className="border-border/50 hover:shadow-accent transition-all duration-300">
+              <CardHeader>
+                <div className="w-12 h-12 bg-gradient-secondary rounded-lg flex items-center justify-center mb-4">
+                  <Eye className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <CardTitle className="text-xl font-bold">Lightning Fast</CardTitle>
+                <CardTitle>Live Publishing</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Instant publishing with global CDN distribution. Breaking news reaches your audience in seconds, not minutes.
+                <p className="text-muted-foreground">
+                  Publish articles instantly without redeploy. Changes go live immediately with real-time updates.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-border/30 hover:shadow-glow hover:border-accent/30 transition-all duration-500 bg-card/80 backdrop-blur-sm group">
-              <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-hero rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Shield className="h-8 w-8 text-primary-foreground" />
+            <Card className="border-border/50 hover:shadow-accent transition-all duration-300">
+              <CardHeader>
+                <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mb-4">
+                  <Shield className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <CardTitle className="text-xl font-bold">Enterprise Security</CardTitle>
+                <CardTitle>Admin Security</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  Bank-grade security with role-based access control, audit logs, and compliance-ready infrastructure.
+                <p className="text-muted-foreground">
+                  Secure admin-only access with Supabase authentication and role-based permissions.
                 </p>
               </CardContent>
             </Card>
@@ -133,7 +106,14 @@ const Index = () => {
         </div>
       </section>
 
-      <Footer />
+      {/* Footer */}
+      <footer className="border-t border-border bg-card/50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-muted-foreground">
+            Built with React, TypeScript, Tailwind CSS, and Supabase
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
