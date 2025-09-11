@@ -37,6 +37,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import CookiePolicy from "./pages/CookiePolicy";
 import Disclaimer from "./pages/Disclaimer";
+import WebsiteAudit from "./pages/WebsiteAudit";
 
 const queryClient = new QueryClient();
 
@@ -72,6 +73,7 @@ const App = () => (
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/cookies" element={<CookiePolicy />} />
                 <Route path="/disclaimer" element={<Disclaimer />} />
+                <Route path="/audit" element={<WebsiteAudit />} />
                 <Route path="/auth" element={<Auth />} />
                 
                 {/* Admin Routes */}
