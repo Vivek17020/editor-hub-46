@@ -208,4 +208,78 @@ All colors MUST be HSL. Rich blues and purples with sophisticated gradients.
       transition-duration: 0.01ms !important;
     }
   }
+  
+  /* Article content styling for consistent image layout */
+  .article-content {
+    line-height: 1.7;
+  }
+  
+  .article-content img {
+    @apply w-full max-w-full h-auto my-6 mx-auto rounded-lg shadow-sm;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 16/9;
+  }
+  
+  .article-content figure {
+    @apply my-8 mx-0;
+  }
+  
+  .article-content figure img {
+    @apply mb-2;
+  }
+  
+  .article-content figcaption {
+    @apply text-sm text-muted-foreground text-center italic mt-2;
+  }
+  
+  /* Responsive image containers */
+  .article-content .image-container {
+    @apply w-full overflow-hidden rounded-lg my-6;
+    max-width: 100%;
+  }
+  
+  .article-content .image-full-width {
+    @apply w-full;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    max-width: 100vw;
+  }
+  
+  @media (max-width: 768px) {
+    .article-content img {
+      @apply my-4;
+      aspect-ratio: 4/3;
+    }
+    
+    .article-content .image-full-width {
+      margin-left: -1rem;
+      margin-right: -1rem;
+      border-radius: 0;
+    }
+  }
+  
+  /* Prevent layout shift for images */
+  .article-content img[loading="lazy"] {
+    contain: layout style paint;
+    content-visibility: auto;
+  }
+  
+  /* Prose enhancements for better image integration */
+  .prose img {
+    @apply my-6 rounded-lg shadow-sm;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .prose figure {
+    @apply my-8;
+  }
+  
+  .prose figcaption {
+    @apply text-center text-muted-foreground text-sm mt-2 italic;
+  }
 }

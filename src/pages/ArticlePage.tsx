@@ -235,19 +235,21 @@ export default function ArticlePage() {
 
             {/* Featured Image */}
             {article.image_url && (
-              <div className="mb-8">
+              <div className="mb-8 overflow-hidden rounded-lg">
                 <img
                   src={article.image_url}
                   alt={article.title}
-                  className="w-full aspect-[16/9] object-cover rounded-lg"
-                  style={{ minWidth: '1200px', maxWidth: '100%' }}
+                  className="w-full aspect-[16/9] object-cover"
                   loading="lazy"
+                  decoding="async"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  style={{ objectFit: 'cover', width: '100%', height: 'auto' }}
                 />
               </div>
             )}
 
             {/* Article Content */}
-            <article className="prose prose-lg max-w-none dark:prose-invert mb-12">
+            <article className="prose prose-lg max-w-none dark:prose-invert mb-12 article-content">
               <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }} />
             </article>
 
