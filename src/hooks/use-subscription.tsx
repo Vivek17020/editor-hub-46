@@ -32,7 +32,7 @@ export const useSubscription = () => {
 
     setIsChecking(true);
     try {
-      const { data, error } = await supabase.functions.invoke('check-subscription');
+      const { data, error } = await supabase.functions.invoke('check-razorpay-subscription');
       
       if (error) {
         console.error('Error checking subscription:', error);
@@ -58,22 +58,8 @@ export const useSubscription = () => {
       return;
     }
 
-    try {
-      const { data, error } = await supabase.functions.invoke('customer-portal');
-      
-      if (error) {
-        console.error('Error creating customer portal session:', error);
-        toast.error('Failed to open subscription management');
-        return;
-      }
-
-      if (data.url) {
-        window.open(data.url, '_blank');
-      }
-    } catch (error) {
-      console.error('Error opening customer portal:', error);
-      toast.error('Failed to open subscription management');
-    }
+    // For Razorpay, redirect to their dashboard or show a message
+    toast.info('To manage your subscription, please contact our support team or visit the Razorpay dashboard');
   };
 
   useEffect(() => {
