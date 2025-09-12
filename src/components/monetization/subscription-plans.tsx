@@ -130,7 +130,7 @@ export const SubscriptionPlans = () => {
       if (data?.subscriptionId) {
         // Open Razorpay checkout
         const options = {
-          key: 'rzp_test_your_key_id', // Replace with your actual Razorpay key ID
+          key: 'rzp_test_9WzF8VXAhF4FCF', // Replace with your actual Razorpay key ID
           subscription_id: data.subscriptionId,
           name: 'TheBulletinBriefs',
           description: `${plan.name} Subscription`,

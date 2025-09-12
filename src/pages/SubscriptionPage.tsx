@@ -23,7 +23,7 @@ export default function SubscriptionPage() {
 
   const checkCurrentSubscription = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('check-subscription');
+      const { data, error } = await supabase.functions.invoke('check-razorpay-subscription');
       
       if (error) {
         console.error('Error checking subscription:', error);

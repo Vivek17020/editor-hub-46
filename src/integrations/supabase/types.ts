@@ -709,7 +709,8 @@ export type Database = {
           created_at: string
           email: string
           id: string
-          stripe_customer_id: string | null
+          razorpay_customer_id: string | null
+          razorpay_subscription_id: string | null
           subscribed: boolean
           subscription_end: string | null
           subscription_tier: string | null
@@ -720,7 +721,8 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
-          stripe_customer_id?: string | null
+          razorpay_customer_id?: string | null
+          razorpay_subscription_id?: string | null
           subscribed?: boolean
           subscription_end?: string | null
           subscription_tier?: string | null
@@ -731,7 +733,8 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
-          stripe_customer_id?: string | null
+          razorpay_customer_id?: string | null
+          razorpay_subscription_id?: string | null
           subscribed?: boolean
           subscription_end?: string | null
           subscription_tier?: string | null
