@@ -74,9 +74,10 @@ All colors MUST be HSL. Rich blues and purples with sophisticated gradients.
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Enhanced typography tokens */
-    --text-heading: 0 0% 6.7%; /* #111 converted to HSL */
-    --text-paragraph: 0 0% 12.9%; /* #212121 converted to HSL */
+    /* Enhanced typography tokens for better readability */
+    --text-heading: 0 0% 6.7%; /* #111 - Dark headings */
+    --text-paragraph: 0 0% 10.2%; /* #1a1a1a - Darker body text */
+    --text-muted: 0 0% 13.3%; /* #222 - Darker muted text */
 
     /* Sidebar design tokens */
     --sidebar-background: 222 84% 4.9%;
@@ -126,8 +127,9 @@ All colors MUST be HSL. Rich blues and purples with sophisticated gradients.
     --ring: 217 91% 60%;
 
     /* Enhanced typography tokens for light theme */
-    --text-heading: 0 0% 6.7%; /* #111 */
-    --text-paragraph: 0 0% 12.9%; /* #212121 */
+    --text-heading: 0 0% 6.7%; /* #111 - Dark headings */
+    --text-paragraph: 0 0% 10.2%; /* #1a1a1a - Darker body text */
+    --text-muted: 0 0% 13.3%; /* #222 - Darker muted text */
   }
 
   .dark {
@@ -182,11 +184,25 @@ All colors MUST be HSL. Rich blues and purples with sophisticated gradients.
   }
 
   body {
-    @apply bg-background text-foreground font-inter;
+    @apply bg-background font-inter;
+    color: hsl(var(--text-paragraph));
     font-display: swap;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Global typography improvements */
+  h1, h2, h3, h4, h5, h6 {
+    color: hsl(var(--text-heading));
+  }
+
+  p, span, div {
+    color: hsl(var(--text-paragraph));
+  }
+
+  footer, footer * {
+    color: hsl(var(--text-muted)) !important;
   }
   
   /* Mobile-first optimizations */
