@@ -8,6 +8,10 @@
 import express from 'express';
 import { createClient } from '@supabase/supabase-js';
 import { formatISO } from 'date-fns';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env (server-side only)
+dotenv.config();
 
 // 2) Create an Express app
 const app = express();
