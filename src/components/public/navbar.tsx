@@ -19,7 +19,7 @@ export function Navbar() {
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
             <img 
-              src="/lovable-uploads/ad21ceb4-1347-4691-ad1a-27e4295439ae.png" 
+              src="/logo.png" 
               alt="TheBulletinBriefs Logo" 
               className="w-8 h-8 rounded-full object-cover"
             />
@@ -53,7 +53,7 @@ export function Navbar() {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <img 
-            src="/lovable-uploads/ad21ceb4-1347-4691-ad1a-27e4295439ae.png" 
+            src="/logo.png" 
             alt="TheBulletinBriefs Logo" 
             className="w-8 h-8 rounded-full object-cover mr-2"
           />
