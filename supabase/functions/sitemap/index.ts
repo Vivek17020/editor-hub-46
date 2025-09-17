@@ -62,7 +62,7 @@ serve(async (req) => {
       headers: {
         ...corsHeaders,
         'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
+        'Cache-Control': 's-maxage=3600, stale-while-revalidate',
       },
     });
 
@@ -132,7 +132,7 @@ function generateSitemap(articles: Article[], categories: Category[]) {
   <url>
     <loc>${baseUrl}/article/${article.slug}</loc>
     <lastmod>${lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>`;
     });

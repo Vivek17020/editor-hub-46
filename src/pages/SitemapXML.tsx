@@ -31,18 +31,21 @@ export default function SitemapXML() {
 
   useEffect(() => {
     if (xmlContent && !isLoading) {
-      // Set proper XML response headers and serve the content
-      const response = new Response(xmlContent, {
-        headers: {
-          'Content-Type': 'application/xml; charset=utf-8',
-          'Cache-Control': 'public, max-age=3600',
-        },
+      // Create a proper XML response
+      const blob = new Blob([xmlContent], { 
+        type: 'application/xml; charset=utf-8' 
       });
-
-      // Create blob URL and replace current page
-      const blob = new Blob([xmlContent], { type: 'application/xml' });
+      
+      // Create object URL and redirect to it
       const url = URL.createObjectURL(blob);
+      
+      // Use replace to avoid back button issues
       window.location.replace(url);
+      
+      // Clean up the URL after a short delay
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 1000);
     }
   }, [xmlContent, isLoading]);
 
@@ -112,3 +115,4 @@ function generateBasicSitemap() {
   </url>
 </urlset>`;
 }
+
