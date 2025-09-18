@@ -32,7 +32,7 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 // 4) GET /sitemap.xml route
-// - Queries Supabase table `articles` where status = "published"
+// - Queries Supabase table `articles` where published = true
 // - Selects slug and updated_at
 // - Generates a valid XML sitemap
 app.get('/sitemap.xml', async (req, res) => {
@@ -41,7 +41,7 @@ app.get('/sitemap.xml', async (req, res) => {
     const { data, error } = await supabase
       .from('articles')
       .select('slug, updated_at')
-      .eq('status', 'published');
+      .eq('published', true);
 
     if (error) {
       throw error;
@@ -49,15 +49,34 @@ app.get('/sitemap.xml', async (req, res) => {
 
     // 5) Generate sitemap XML
     const baseUrl = 'https://thebulletinbriefs.in';
+    const today = formatISO(new Date(), { representation: 'date' });
 
-    const urlEntries = (data || []).map((row) => {
+    // Static pages
+    const staticPages = [
+      { path: '/', changefreq: 'daily', priority: '1.0' },
+      { path: '/about', changefreq: 'monthly', priority: '0.7' },
+      { path: '/contact', changefreq: 'monthly', priority: '0.7' },
+      { path: '/subscription', changefreq: 'weekly', priority: '0.7' },
+      { path: '/privacy', changefreq: 'monthly', priority: '0.7' },
+      { path: '/terms', changefreq: 'monthly', priority: '0.7' },
+      { path: '/rss', changefreq: 'daily', priority: '0.5' },
+    ];
+
+    const staticUrls = staticPages.map(page => `  <url>
+    <loc>${baseUrl}${page.path}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`).join('\n');
+
+    // Dynamic article URLs
+    const articleUrls = (data || []).map((row) => {
       const safeSlug = String(row.slug || '').replace(/^\/+/, '');
       const lastModDate = row.updated_at ? new Date(row.updated_at) : new Date();
-      // Use date-fns to format ISO date (YYYY-MM-DD or full ISO as needed)
       const lastmod = formatISO(lastModDate, { representation: 'date' });
 
       return `  <url>
-    <loc>${baseUrl}/${safeSlug}</loc>
+    <loc>${baseUrl}/article/${safeSlug}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -66,11 +85,13 @@ app.get('/sitemap.xml', async (req, res) => {
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urlEntries}
+${staticUrls}
+${articleUrls}
 </urlset>`;
 
-    // 6) Set Content-Type and return XML
+    // 6) Set Content-Type and return XML with caching headers
     res.setHeader('Content-Type', 'application/xml');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
     res.status(200).send(xml);
   } catch (err) {
     console.error('Error generating sitemap:', err);
