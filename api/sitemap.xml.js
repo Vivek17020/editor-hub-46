@@ -1,66 +1,53 @@
 // api/sitemap.xml.js
 // Vercel serverless function for dynamic sitemap
 
-// Load environment variables
-import 'dotenv/config';
-import { createClient } from '@supabase/supabase-js';
+const { createClient } = require('@supabase/supabase-js');
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   // Only allow GET requests
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // 🔍 DEBUG: Log handler start
-  console.log('🚀 Sitemap handler started at:', new Date().toISOString());
-  console.log('🔍 Debug mode:', req.query.debug === '1');
+  console.log('🚀 Sitemap handler started');
 
   try {
-    // Initialize Supabase client with server-side env vars
+    // Initialize Supabase client
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    console.log('🔧 Environment check:');
-    console.log('- SUPABASE_URL exists:', !!supabaseUrl);
-    console.log('- SERVICE_ROLE_KEY exists:', !!supabaseServiceKey);
+    console.log('Environment check:', {
+      hasUrl: !!supabaseUrl,
+      hasKey: !!supabaseServiceKey
+    });
 
     if (!supabaseUrl || !supabaseServiceKey) {
-      console.error('❌ Missing Supabase environment variables');
+      console.error('Missing environment variables');
       return res.status(500).json({ error: 'Server configuration error' });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 🔍 DEBUG: Log table and column info
-    console.log('📊 Querying table: articles');
-    console.log('📋 Columns: slug, updated_at');
-    console.log('🔍 Filter: published = true');
-
-    // Query all published articles
+    // Query published articles
     const { data: articles, error } = await supabase
       .from('articles')
       .select('slug, updated_at')
       .eq('published', true)
       .order('updated_at', { ascending: false });
 
-    // 🔍 DEBUG: Log query results
-    console.log('📊 Supabase query result:');
-    console.log('- Articles count:', articles?.length || 0);
-    console.log('- Error:', error);
-    console.log('- Sample articles:', articles?.slice(0, 3));
+    console.log('Query result:', {
+      articleCount: articles?.length || 0,
+      error: error?.message || null
+    });
 
     if (error) {
-      console.error('❌ Supabase query error:', error);
+      console.error('Supabase error:', error);
       return res.status(500).json({ error: 'Database query failed' });
     }
 
     // Generate sitemap XML
     const baseUrl = 'https://thebulletinbriefs.in';
     const today = new Date().toISOString().split('T')[0];
-
-    console.log('🏗️ Generating sitemap XML...');
-    console.log('- Base URL:', baseUrl);
-    console.log('- Today:', today);
 
     // Static pages
     const staticPages = [
@@ -75,8 +62,6 @@ export default async function handler(req, res) {
       { path: '/editorial-guidelines', changefreq: 'monthly', priority: '0.7' },
       { path: '/rss', changefreq: 'daily', priority: '0.5' },
     ];
-
-    console.log('📄 Static pages count:', staticPages.length);
 
     // Generate static page URLs
     const staticUrls = staticPages.map(page => `  <url>
@@ -100,10 +85,6 @@ export default async function handler(req, res) {
   </url>`;
     }).join('\n');
 
-    console.log('📰 Article URLs generated:', articleUrls.split('\n').length - 1);
-    console.log('🔍 Sample article URLs:');
-    console.log(articleUrls.split('\n').slice(0, 3).join('\n'));
-
     // Combine all URLs
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -111,21 +92,20 @@ ${staticUrls}
 ${articleUrls}
 </urlset>`;
 
-    // 🔍 DEBUG: Log final XML (first 500 chars)
-    console.log('📋 Final XML preview (first 500 chars):');
-    console.log(xml.substring(0, 500) + '...');
-    console.log('📏 Total XML length:', xml.length);
+    console.log('Generated sitemap:', {
+      staticPages: staticPages.length,
+      articles: articles?.length || 0,
+      xmlLength: xml.length
+    });
 
-    // Set proper headers (temporary no-store for debugging)
+    // Set headers
     res.setHeader('Content-Type', 'application/xml');
     res.setHeader('Cache-Control', 'no-store');
     
-    console.log('✅ Sitemap generated successfully');
     return res.status(200).send(xml);
 
   } catch (error) {
-    console.error('❌ Sitemap generation error:', error);
-    console.error('❌ Error stack:', error.stack);
+    console.error('Sitemap error:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
-}
+};
