@@ -2,6 +2,9 @@
   "functions": {
     "api/sitemap.xml.js": {
       "maxDuration": 10
+    },
+    "api/sitemap.js": {
+      "maxDuration": 10
     }
   },
   "rewrites": [

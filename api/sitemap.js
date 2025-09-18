@@ -71,9 +71,9 @@ app.get('/sitemap.xml', async (req, res) => {
     // Static pages
     const staticXml = buildStaticUrls(baseUrl);
 
-    // Dynamic article URLs (per spec, path is /articles/{slug})
+    // Dynamic article URLs (correct path is /article/{slug})
     const articleXml = (articles || []).map(a => `  <url>
-    <loc>${baseUrl}/articles/${a.slug}</loc>
+    <loc>${baseUrl}/article/${a.slug}</loc>
     <lastmod>${toYMD(a.updated_at)}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
