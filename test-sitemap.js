@@ -1,7 +1,7 @@
 // test-sitemap.js
-// Simple test to verify sitemap function works
+// Simple test to verify sitemap function works in ESM projects
 
-const sitemapHandler = require('./api/sitemap.xml.js');
+import handler from './api/sitemap.xml.js';
 
 // Mock request and response
 const mockReq = {
@@ -19,4 +19,4 @@ const mockRes = {
 
 // Test the function
 console.log('Testing sitemap function...');
-sitemapHandler(mockReq, mockRes);
+await handler(mockReq, mockRes);
