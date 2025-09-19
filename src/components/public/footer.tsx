@@ -50,7 +50,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/logo.png" 
+                src="/lovable-uploads/ad21ceb4-1347-4691-ad1a-27e4295439ae.png" 
                 alt="TheBulletinBriefs Logo" 
                 className="w-8 h-8 rounded-full object-cover"
               />

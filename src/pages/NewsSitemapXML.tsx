@@ -1,48 +1,32 @@
-// Replace the entire file with this corrected version:
-
+import { useEffect } from "react";
 import { useArticles } from "@/hooks/use-articles";
-import { Helmet } from "react-helmet-async";
 
 export default function NewsSitemapXML() {
-  const { data: articlesData } = useArticles(undefined, 1, 1000);
+  const { data: articlesData } = useArticles(undefined, 1, 1000); // Get many recent articles
 
-  if (!articlesData?.articles) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Generating Google News Sitemap...</h1>
-          <p className="text-muted-foreground">
-            Please wait while we generate your Google News sitemap.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  const newsSitemapXml = generateNewsSitemap(articlesData.articles);
+  useEffect(() => {
+    if (articlesData?.articles) {
+      const newsSitemap = generateNewsSitemap(articlesData.articles);
+      
+      // Replace the current page with the news sitemap
+      window.location.replace(`data:application/xml;charset=utf-8,${encodeURIComponent(newsSitemap)}`);
+    }
+  }, [articlesData]);
 
   return (
-    <>
-      <Helmet>
-        <meta httpEquiv="Content-Type" content="application/xml; charset=utf-8" />
-      </Helmet>
-      <pre 
-        style={{ 
-          fontFamily: 'monospace', 
-          whiteSpace: 'pre-wrap', 
-          margin: 0, 
-          padding: 0,
-          backgroundColor: 'white',
-          color: 'black'
-        }}
-        dangerouslySetInnerHTML={{ __html: newsSitemapXml }}
-      />
-    </>
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-4">Generating Google News Sitemap...</h1>
+        <p className="text-muted-foreground">
+          Please wait while we generate your Google News sitemap.
+        </p>
+      </div>
+    </div>
   );
 }
 
 function generateNewsSitemap(articles: any[]) {
-  const baseUrl = "https://thebulletinbriefs.in";
+  const baseUrl = window.location.origin;
   
   // Filter articles from the last 2 days (Google News requirement)
   const twoDaysAgo = new Date();
@@ -57,7 +41,8 @@ function generateNewsSitemap(articles: any[]) {
     const publishDate = article.published_at ? new Date(article.published_at) : new Date(article.created_at);
     const formattedDate = publishDate.toISOString();
     
-    return `  <url>
+    return `
+  <url>
     <loc>${baseUrl}/article/${article.slug}</loc>
     <news:news>
       <news:publication>
@@ -78,7 +63,7 @@ function generateNewsSitemap(articles: any[]) {
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>`;
-  }).join('\n');
+  }).join('');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

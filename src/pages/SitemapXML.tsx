@@ -1,55 +1,33 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useArticles, useCategories } from "@/hooks/use-articles";
 
 export default function SitemapXML() {
+  const { data: articlesData, isLoading: articlesLoading } = useArticles(undefined, 1, 1000);
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
   const [xmlContent, setXmlContent] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const generateSitemap = async () => {
-      try {
-        // Call the Supabase Edge Function
-        const { data, error } = await supabase.functions.invoke('sitemap');
-
-        if (error) {
-          console.error('Error calling sitemap function:', error);
-          throw error;
-        }
-
-        setXmlContent(data);
-      } catch (error) {
-        console.error('Failed to generate sitemap:', error);
-        // Fallback to a basic sitemap
-        setXmlContent(generateBasicSitemap());
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    generateSitemap();
-  }, []);
-
-  useEffect(() => {
-    if (xmlContent && !isLoading) {
-      // Create a proper XML response
-      const blob = new Blob([xmlContent], { 
-        type: 'application/xml; charset=utf-8' 
+    if (articlesData?.articles && categories && !articlesLoading && !categoriesLoading) {
+      const sitemapXml = generateSitemap(articlesData.articles, categories);
+      setXmlContent(sitemapXml);
+      
+      // Set proper XML response headers
+      const response = new Response(sitemapXml, {
+        headers: {
+          'Content-Type': 'application/xml; charset=utf-8',
+          'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
+        },
       });
       
-      // Create object URL and redirect to it
+      // Create blob URL and replace current page
+      const blob = new Blob([sitemapXml], { type: 'application/xml' });
       const url = URL.createObjectURL(blob);
-      
-      // Use replace to avoid back button issues
       window.location.replace(url);
-      
-      // Clean up the URL after a short delay
-      setTimeout(() => {
-        URL.revokeObjectURL(url);
-      }, 1000);
     }
-  }, [xmlContent, isLoading]);
+  }, [articlesData, categories, articlesLoading, categoriesLoading]);
 
-  if (isLoading) {
+  // Show loading state
+  if (articlesLoading || categoriesLoading || !xmlContent) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -65,54 +43,79 @@ export default function SitemapXML() {
   return null;
 }
 
-function generateBasicSitemap() {
+function generateSitemap(articles: any[], categories: any[]) {
   const baseUrl = "https://thebulletinbriefs.in";
-  const today = new Date().toISOString().split("T")[0];
+  const currentDate = new Date().toISOString().split('T')[0];
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
+  let urlEntries = "";
+
+  // Homepage - Priority 1.0
+  urlEntries += `  <url>
     <loc>${baseUrl}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${currentDate}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  <url>
-    <loc>${baseUrl}/about</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
+`;
+
+  // Static pages - Priority 0.7
+  const staticPages = [
+    { path: '/about', changefreq: 'monthly' },
+    { path: '/contact', changefreq: 'monthly' },
+    { path: '/editorial-guidelines', changefreq: 'monthly' },
+    { path: '/subscription', changefreq: 'weekly' },
+    { path: '/privacy', changefreq: 'monthly' },
+    { path: '/terms', changefreq: 'monthly' },
+    { path: '/cookies', changefreq: 'monthly' },
+    { path: '/disclaimer', changefreq: 'monthly' }
+  ];
+
+  staticPages.forEach(page => {
+    urlEntries += `  <url>
+    <loc>${baseUrl}${page.path}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
-    <loc>${baseUrl}/contact</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+`;
+  });
+
+  // Category pages - Priority 0.8
+  categories.forEach(category => {
+    urlEntries += `  <url>
+    <loc>${baseUrl}/category/${category.slug}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
-  <url>
-    <loc>${baseUrl}/subscription</loc>
-    <lastmod>${today}</lastmod>
+`;
+  });
+
+  // Article pages - Priority 0.8 (as requested)
+  articles.filter(article => article.published).forEach(article => {
+    const lastmod = article.updated_at 
+      ? new Date(article.updated_at).toISOString().split('T')[0] 
+      : currentDate;
+    
+    urlEntries += `  <url>
+    <loc>${baseUrl}/article/${article.slug}</loc>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  <url>
-    <loc>${baseUrl}/privacy</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/terms</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
+`;
+  });
+
+  // RSS Feed - Priority 0.5
+  urlEntries += `  <url>
     <loc>${baseUrl}/rss</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${currentDate}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
-</urlset>`;
-}
+`;
 
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urlEntries}</urlset>`;
+}

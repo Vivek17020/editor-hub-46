@@ -326,54 +326,6 @@ All colors MUST be HSL. Rich blues and purples with sophisticated gradients.
     contain: layout style paint;
     content-visibility: auto;
   }
-
-  /* Fix article card alignment issues */
-  .article-card-container {
-    contain: layout style paint;
-    will-change: transform;
-  }
-
-  /* Ensure consistent grid alignment */
-  .articles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    align-items: start;
-    contain: layout;
-  }
-
-  /* Override Tailwind grid classes for better consistency */
-  .articles-grid.grid-cols-1 {
-    grid-template-columns: 1fr;
-  }
-  
-  @media (min-width: 768px) {
-    .articles-grid.md\:grid-cols-2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (min-width: 1024px) {
-    .articles-grid.lg\:grid-cols-3 {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  /* Prevent hydration mismatches */
-  .article-card {
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Fix image aspect ratio consistency */
-  .article-image {
-    aspect-ratio: 16/9;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    display: block;
-  }
   
   /* Prose enhancements for better image integration */
   .prose img {
