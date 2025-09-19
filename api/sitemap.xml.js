@@ -1,15 +1,19 @@
 // api/sitemap.xml.js
 // Vercel serverless function for dynamic sitemap
 
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // Only allow GET requests
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   console.log('🚀 Sitemap handler started');
+  console.log('[sitemap] runtime context:', {
+    isVercel: !!process.env.VERCEL,
+    vercelId: req.headers?.['x-vercel-id'] || null
+  });
 
   try {
     // Initialize Supabase client
@@ -47,7 +51,7 @@ module.exports = async (req, res) => {
 
     // Generate sitemap XML
     const baseUrl = 'https://thebulletinbriefs.in';
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString();
 
     // Static pages
     const staticPages = [
@@ -74,7 +78,7 @@ module.exports = async (req, res) => {
     // Generate article URLs
     const articleUrls = (articles || []).map(article => {
       const lastmod = article.updated_at 
-        ? new Date(article.updated_at).toISOString().split('T')[0]
+        ? new Date(article.updated_at).toISOString()
         : today;
 
       return `  <url>
@@ -100,7 +104,7 @@ ${articleUrls}
 
     // Set headers
     res.setHeader('Content-Type', 'application/xml');
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
     
     return res.status(200).send(xml);
 
@@ -108,4 +112,4 @@ ${articleUrls}
     console.error('Sitemap error:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
-};
+}
