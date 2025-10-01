@@ -1,12 +1,33 @@
 // Replace the entire file with this corrected version:
 
 import { useArticles } from "@/hooks/use-articles";
-import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
 
 export default function NewsSitemapXML() {
-  const { data: articlesData } = useArticles(undefined, 1, 1000);
+  const { data: articlesData, isLoading } = useArticles(undefined, 1, 1000);
+  const [xmlGenerated, setXmlGenerated] = useState(false);
 
-  if (!articlesData?.articles) {
+  useEffect(() => {
+    if (articlesData?.articles && !xmlGenerated) {
+      const newsSitemapXml = generateNewsSitemap(articlesData.articles);
+      
+      // Create a blob with the XML content
+      const blob = new Blob([newsSitemapXml], { type: 'application/xml' });
+      const url = URL.createObjectURL(blob);
+      
+      // Replace the current page with the XML
+      window.location.replace(url);
+      
+      // Clean up the URL after a short delay
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 100);
+      
+      setXmlGenerated(true);
+    }
+  }, [articlesData, xmlGenerated]);
+
+  if (isLoading || !xmlGenerated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -19,26 +40,7 @@ export default function NewsSitemapXML() {
     );
   }
 
-  const newsSitemapXml = generateNewsSitemap(articlesData.articles);
-
-  return (
-    <>
-      <Helmet>
-        <meta httpEquiv="Content-Type" content="application/xml; charset=utf-8" />
-      </Helmet>
-      <pre 
-        style={{ 
-          fontFamily: 'monospace', 
-          whiteSpace: 'pre-wrap', 
-          margin: 0, 
-          padding: 0,
-          backgroundColor: 'white',
-          color: 'black'
-        }}
-        dangerouslySetInnerHTML={{ __html: newsSitemapXml }}
-      />
-    </>
-  );
+  return null;
 }
 
 function generateNewsSitemap(articles: any[]) {
