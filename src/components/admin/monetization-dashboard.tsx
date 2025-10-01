@@ -75,9 +75,9 @@ export const MonetizationDashboard = () => {
 
         // Fetch subscriber count with error handling
         supabase
-          .from('subscribers')
+          .from('newsletter_subscribers')
           .select('*', { count: 'exact', head: true })
-          .eq('subscribed', true),
+          .eq('is_active', true),
 
         // Fetch ad impressions
         supabase
