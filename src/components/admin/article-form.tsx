@@ -12,7 +12,7 @@ import { AIAssistantPanel } from './ai-assistant-panel';
 import { ArticlePremiumControls } from './article-premium-controls';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { Upload, Eye, Save, Send, X, Clock, CheckCircle, RefreshCw } from 'lucide-react';
+import { Upload, Eye, Save, Send, X, Clock, CheckCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import slugify from 'slugify';
 
