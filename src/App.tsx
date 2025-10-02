@@ -53,43 +53,43 @@ const App = () => (
                 <OptimizedCoreWebVitals />
                 <Toaster />
                 <Sonner />
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<NewsHomepage />} />
-                <Route path="/article/:slug" element={<ArticlePage />} />
-                <Route path="/category/:slug" element={<CategoryPage />} />
-                <Route path="/rss" element={<RSSFeed />} />
-                <Route path="/sitemap.xml" element={<SitemapXML />} />
-                <Route path="/news-sitemap.xml" element={<NewsSitemapXML />} />
-                <Route path="/about" element={<AboutUs />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/subscription" element={<SubscriptionPage />} />
-                <Route path="/subscription-success" element={<SubscriptionSuccess />} />
-                <Route path="/subscription-canceled" element={<SubscriptionCanceled />} />
-                <Route path="/editorial-guidelines" element={<EditorialGuidelines />} />
-                <Route path="/newsletter-preferences" element={<NewsletterPreferencesPage />} />
-                <Route path="/amp/article/:slug" element={<AMPArticlePage />} />
-                <Route path="/privacy" element={<PrivacyPolicy />} />
-                <Route path="/terms" element={<TermsOfService />} />
-                <Route path="/cookies" element={<CookiePolicy />} />
-                <Route path="/disclaimer" element={<Disclaimer />} />
-                <Route path="/audit" element={<WebsiteAudit />} />
-                <Route path="/auth" element={<Auth />} />
-                
-                {/* Admin Routes */}
-                <Route path="/admin/login" element={<AdminLogin />} />
-                <Route path="/admin" element={<AdminLayout />}>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="articles" element={<AdminArticles />} />
-                  <Route path="articles/new" element={<AdminNewArticle />} />
-                  <Route path="articles/:id/edit" element={<AdminEditArticle />} />
-                  <Route path="engagement" element={<AdminEngagement />} />
-                  <Route path="settings" element={<AdminSettings />} />
-                </Route>
-                
-                {/* Catch-all route */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<NewsHomepage />} />
+                  <Route path="/article/:slug" element={<ArticlePage />} />
+                  <Route path="/category/:slug" element={<CategoryPage />} />
+                  <Route path="/rss" element={<RSSFeed />} />
+                  <Route path="/sitemap.xml" element={<SitemapXML />} />
+                  <Route path="/news-sitemap.xml" element={<NewsSitemapXML />} />
+                  <Route path="/about" element={<AboutUs />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/subscription" element={<SubscriptionPage />} />
+                  <Route path="/subscription-success" element={<SubscriptionSuccess />} />
+                  <Route path="/subscription-canceled" element={<SubscriptionCanceled />} />
+                  <Route path="/editorial-guidelines" element={<EditorialGuidelines />} />
+                  <Route path="/newsletter-preferences" element={<NewsletterPreferencesPage />} />
+                  <Route path="/amp/article/:slug" element={<AMPArticlePage />} />
+                  <Route path="/privacy" element={<PrivacyPolicy />} />
+                  <Route path="/terms" element={<TermsOfService />} />
+                  <Route path="/cookies" element={<CookiePolicy />} />
+                  <Route path="/disclaimer" element={<Disclaimer />} />
+                  <Route path="/audit" element={<WebsiteAudit />} />
+                  <Route path="/auth" element={<Auth />} />
+                  
+                  {/* Admin Routes */}
+                  <Route path="/admin/login" element={<AdminLogin />} />
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="articles" element={<AdminArticles />} />
+                    <Route path="articles/new" element={<AdminNewArticle />} />
+                    <Route path="articles/:id/edit" element={<AdminEditArticle />} />
+                    <Route path="engagement" element={<AdminEngagement />} />
+                    <Route path="settings" element={<AdminSettings />} />
+                  </Route>
+                  
+                  {/* Catch-all route */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
               </ErrorBoundary>
             </BrowserRouter>
           </TooltipProvider>
