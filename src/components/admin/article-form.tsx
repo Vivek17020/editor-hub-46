@@ -247,6 +247,7 @@ export function ArticleForm({ article, onSave }: ArticleFormProps) {
         published: !isDraft,
         published_at: !isDraft ? new Date().toISOString() : null,
         updated_at: new Date().toISOString(),
+        author_id: user.id,
       };
 
       if (article?.id) {
