@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { VAPIDGenerator } from '@/components/pwa/vapid-generator';
 import { SecurityNotice } from '@/components/security/security-notice';
 import { SecurityAuditReport } from '@/components/security/security-audit-report';
+import { GoogleSearchConsole } from '@/components/seo/google-search-console';
 import { Settings, Shield, Bell, Database } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { Navigate } from 'react-router-dom';
@@ -38,8 +39,12 @@ export default function AdminSettings() {
 
       <SecurityNotice />
 
-      <Tabs defaultValue="security" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+      <Tabs defaultValue="seo" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="seo" className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            SEO & Indexing
+          </TabsTrigger>
           <TabsTrigger value="security" className="flex items-center gap-2">
             <Shield className="h-4 w-4" />
             Security
@@ -53,6 +58,10 @@ export default function AdminSettings() {
             Database
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="seo" className="space-y-6">
+          <GoogleSearchConsole />
+        </TabsContent>
 
         <TabsContent value="security" className="space-y-6">
           <SecurityAuditReport />
