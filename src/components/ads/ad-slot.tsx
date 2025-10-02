@@ -29,7 +29,7 @@ export const AdSlot = ({ id, format = 'rectangle', className, lazy = true }: AdS
     try {
       await supabase.from('monetization_analytics').insert({
         event_type: 'ad_impression',
-        article_id: null, // Can be set if ad is on article page
+        article_id: null,
         metadata: { ad_id: id, ad_format: format }
       });
     } catch (error) {
